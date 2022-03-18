@@ -7,7 +7,7 @@ library(plotly)
 
 app <- Dash$new(external_stylesheets = dbcThemes$BOOTSTRAP)
 
-dat <- readr::read_csv(here::here('data', 'us_counties_processed.csv'))
+dat <- readr::read_csv(here::here('data','processed', 'us_counties_processed.csv'))
 bar <- dat %>% group_by(county) %>% summarise(percent_unemployed_CDC = mean(percent_unemployed_CDC),
                                               population_density_per_sqmi= mean(population_density_per_sqmi),
                                               percent_age_17_and_younger= mean(percent_age_17_and_younger),
