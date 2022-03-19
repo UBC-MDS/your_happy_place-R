@@ -22,7 +22,7 @@ The dashboard below is the weather app component of YHP.
 
 Below please find the small demo of the app:
 
-![ Alt text](demo.gif) / ! [](demo.gif)
+![Demo of the app](demo.gif)
 
 License
 -------
