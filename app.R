@@ -4,6 +4,13 @@ library(dashHtmlComponents)
 library(dashBootstrapComponents)
 library(ggplot2)
 library(plotly)
+# adding libraries as I did befor to avoid any problems in heroku
+library(readr)
+library(here)
+library(purrr)
+library(ggthemes)
+library(shiny)
+
 
 app <- Dash$new(external_stylesheets = dbcThemes$BOOTSTRAP)
 
