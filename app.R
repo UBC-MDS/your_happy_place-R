@@ -184,7 +184,7 @@ app$callback(
                            color = county)) +
       geom_line() +
       xlab("Month") +
-      ylab("Precipitation") +
+      ylab("Precipitation (in)") +
       ggtitle("Precipitation by County") +
       labs(color="county") +
       labs(color="county")+scale_x_date(labels = date_format("%b"))
@@ -202,7 +202,7 @@ app$callback(
                            color = county)) +
       geom_line() +
       xlab("Month") +
-      ylab("max_temp") +
+      ylab("Max Temperature (F)") +
       ggtitle("Max Temperature by County") +
       labs(color="county") +
       labs(color="county")+scale_x_date(labels = date_format("%b"))
@@ -220,7 +220,7 @@ app$callback(
                            color = county)) +
       geom_line() +
       xlab("Month") +
-      ylab("min_temp") +
+      ylab("Min Temperature (F)") +
       ggtitle("Min Temperature by County") +
       labs(color="county") +
       labs(color="county")+scale_x_date(labels = date_format("%b"))
@@ -238,7 +238,7 @@ app$callback(
                            color = county)) +
       geom_line() +
       xlab("Month") +
-      ylab("Rain") +
+      ylab("Rain (in)") +
       ggtitle("Rain by County") +
       labs(color="county") +
       labs(color="county")+scale_x_date(labels = date_format("%b"))
@@ -256,7 +256,7 @@ app$callback(
                            color = county)) +
       geom_line() +
       xlab("Month") +
-      ylab("Snow") +
+      ylab("Snow (in)") +
       ggtitle("Snow by County") +
       labs(color="county") +
       labs(color="county")+scale_x_date(labels = date_format("%b"))
