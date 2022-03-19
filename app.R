@@ -8,6 +8,7 @@ library(here)
 library(purrr)
 library(ggthemes)
 library(shiny)
+library(scales)
 
 
 app <- Dash$new(external_stylesheets = dbcThemes$BOOTSTRAP)
@@ -25,6 +26,9 @@ line <- dat %>% group_by(county,month) %>% summarise(mean_temp = mean(mean_temp)
                                                      rain = mean(rain),
                                                      snow = mean(snow))
 
+line$Date<-as.Date(with(line,paste('2020',month,'1',sep="-")),"%Y-%m-%d")
+#head(line)
+
 app$layout(
   dbcContainer(
     dbcCol(
@@ -32,7 +36,7 @@ app$layout(
         dbcRow(
           list(
             htmlH2(
-              "Your Happy Place"
+              "Your Happy Place", style=list('padding' = '20px')
             )
           )
         ),
@@ -45,33 +49,45 @@ app$layout(
               value=list('Alachua','Accomack'))
           )
         ),
+        dbcContainer(
         dbcRow(
           list(
-            dbcCol(
-              
-              list(
-                dccGraph(id='unemplot'),
-                dccGraph(id='popplot'),
-                dccGraph(id='17plot'),
-                dccGraph(id='65plot')
+          dbcTabs(
+            list(
+              dbcTab(label='Social',
+                    dbcRow(list(
+                     dbcCol(list(
+                         dccGraph(id='unemplot'),
+                         dccGraph(id='popplot'))
+                     ), 
+                     dbcCol(list(
+                         dccGraph(id='17plot'),
+                         dccGraph(id='65plot'))
+                     ))
+                    ),style=list('padding-top' = '20px')),
+              dbcTab(label='Climate', 
+                dbcRow(
+                  list(
+                dbcCol(
+                  list(
+                    dccGraph(id='tempplot'),
+                    dccGraph(id='maxplot'),
+                    dccGraph(id='minplot')
+                  ), width=6
+                ),
+                dbcCol(
+                  list(
+                    dccGraph(id='perplot'),
+                    dccGraph(id='rainplot'),
+                    dccGraph(id='snowplot')
+                  ), width=6
+                )
+                  )),style=list('padding-top' = '20px')
               )
-            ),
-            dbcCol(
-              list(
-                dccGraph(id='tempplot'),
-                dccGraph(id='maxplot'),
-                dccGraph(id='minplot')
-              )
-            ),
-            dbcCol(
-              list(
-                dccGraph(id='perplot'),
-                dccGraph(id='rainplot'),
-                dccGraph(id='snowplot')
-              )
-            )
+            ),style=list('padding-top' = '20px')
           )
-        )
+          )
+        ))
       )
     )
   )
@@ -86,7 +102,8 @@ app$callback(
       aes(x = county,
           y = percent_unemployed_CDC,fill=county) +
       geom_bar(stat="identity")+
-      ggtitle('percent_unemployed_CDC')
+      ggtitle('Percent Unemployed')+
+      labs(y="Unemployed (%)")
     ggplotly(p)
   }
 )
@@ -101,7 +118,8 @@ app$callback(
       aes(x = county,
           y = population_density_per_sqmi,fill=county) +
       geom_bar(stat="identity")+
-      ggtitle('population_density_per_sqmi')
+      ggtitle('Population Density')+
+      labs(y='Density (sqmi)')
     ggplotly(p)
   }
 )
@@ -115,7 +133,8 @@ app$callback(
       aes(x = county,
           y = percent_age_17_and_younger,fill=county) +
       geom_bar(stat="identity")+
-      ggtitle('percent_age_17_and_younger')
+      ggtitle('Young Population: 17 and Below') +
+      labs(y='Under 18yo (%)')
     ggplotly(p)
   }
 )
@@ -129,10 +148,12 @@ app$callback(
       aes(x = county,
           y = percent_age_65_and_older,fill=county) +
       geom_bar(stat="identity")+
-      ggtitle('percent_age_65_and_older')
+      ggtitle('Senior Population: 65 and Up') +
+      labs(y='Over 64yo (%)')
     ggplotly(p)
   }
 )
+
 
 app$callback(
   output('tempplot', 'figure'),
@@ -140,14 +161,14 @@ app$callback(
   function(xcol) {
     line1 <- line %>%
       filter(county %in% xcol)
-    p <- ggplot(line1, aes(x = month,
+    p <- ggplot(line1, aes(x = Date,
                            y = mean_temp,
                            color = county)) +
       geom_line() +
       xlab("Month") +
       ylab("Mean Temperature (F)") +
-      ggtitle("Mean temperature by county") +
-      labs(color="county")
+      ggtitle("Mean Temperature by County") +
+      labs(color="county")+scale_x_date(labels = date_format("%b"))
     ggplotly(p)
   }
 )    
@@ -158,14 +179,15 @@ app$callback(
   function(xcol) {
     line1 <- line %>%
       filter(county %in% xcol)
-    p <- ggplot(line1, aes(x = month,
+    p <- ggplot(line1, aes(x = Date,
                            y = precipitation,
                            color = county)) +
       geom_line() +
       xlab("Month") +
       ylab("Precipitation") +
-      ggtitle("Precipitation by county") +
-      labs(color="county")
+      ggtitle("Precipitation by County") +
+      labs(color="county") +
+      labs(color="county")+scale_x_date(labels = date_format("%b"))
     ggplotly(p)
   }
 )  
@@ -175,14 +197,15 @@ app$callback(
   function(xcol) {
     line1 <- line %>%
       filter(county %in% xcol)
-    p <- ggplot(line1, aes(x = month,
+    p <- ggplot(line1, aes(x = Date,
                            y = max_temp,
                            color = county)) +
       geom_line() +
       xlab("Month") +
       ylab("max_temp") +
-      ggtitle("max_temp by county") +
-      labs(color="county")
+      ggtitle("Max Temperature by County") +
+      labs(color="county") +
+      labs(color="county")+scale_x_date(labels = date_format("%b"))
     ggplotly(p)
   }
 ) 
@@ -192,14 +215,15 @@ app$callback(
   function(xcol) {
     line1 <- line %>%
       filter(county %in% xcol)
-    p <- ggplot(line1, aes(x = month,
+    p <- ggplot(line1, aes(x = Date,
                            y = min_temp,
                            color = county)) +
       geom_line() +
       xlab("Month") +
       ylab("min_temp") +
-      ggtitle("min_temp by county") +
-      labs(color="county")
+      ggtitle("Min Temperature by County") +
+      labs(color="county") +
+      labs(color="county")+scale_x_date(labels = date_format("%b"))
     ggplotly(p)
   }
 ) 
@@ -209,14 +233,15 @@ app$callback(
   function(xcol) {
     line1 <- line %>%
       filter(county %in% xcol)
-    p <- ggplot(line1, aes(x = month,
+    p <- ggplot(line1, aes(x = Date,
                            y = rain,
                            color = county)) +
       geom_line() +
       xlab("Month") +
       ylab("Rain") +
-      ggtitle("Rain by county") +
-      labs(color="county")
+      ggtitle("Rain by County") +
+      labs(color="county") +
+      labs(color="county")+scale_x_date(labels = date_format("%b"))
     ggplotly(p)
   }
 ) 
@@ -226,19 +251,18 @@ app$callback(
   function(xcol) {
     line1 <- line %>%
       filter(county %in% xcol)
-    p <- ggplot(line1, aes(x = month,
+    p <- ggplot(line1, aes(x = Date,
                            y = snow,
                            color = county)) +
       geom_line() +
       xlab("Month") +
       ylab("Snow") +
-      ggtitle("Snow by county") +
-      labs(color="county")
+      ggtitle("Snow by County") +
+      labs(color="county") +
+      labs(color="county")+scale_x_date(labels = date_format("%b"))
     ggplotly(p)
   }
 ) 
 
-
-
-
+debug = TRUE
 app$run_server(host = '0.0.0.0')
