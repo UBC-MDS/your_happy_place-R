@@ -14,12 +14,13 @@ library(scales)
 app <- Dash$new(external_stylesheets = dbcThemes$BOOTSTRAP)
 
 dat <- readr::read_csv(here::here('data','processed', 'us_counties_processed.csv'))
-bar <- dat %>% group_by(county) %>% summarise(percent_unemployed_CDC = mean(percent_unemployed_CDC),
+bar <- dat %>% group_by(state,county) %>% summarise(percent_unemployed_CDC = mean(percent_unemployed_CDC),
                                               population_density_per_sqmi= mean(population_density_per_sqmi),
                                               percent_age_17_and_younger= mean(percent_age_17_and_younger),
                                               percent_age_65_and_older = mean(percent_age_65_and_older))
 
-line <- dat %>% group_by(county,month) %>% summarise(mean_temp = mean(mean_temp),
+
+line <- dat %>% group_by(state,county,month) %>% summarise(mean_temp = mean(mean_temp),
                                                      precipitation= mean(precipitation),
                                                      max_temp= mean(max_temp),
                                                      min_temp = mean(min_temp),
@@ -100,7 +101,7 @@ app$callback(
       filter(county %in% (xcol))
     p <- ggplot(bar1) +
       aes(x = county,
-          y = percent_unemployed_CDC,fill=county) +
+          y = percent_unemployed_CDC,fill=state,linetype=county) +
       geom_bar(stat="identity")+
       ggtitle('Percent Unemployed')+
       labs(y="Unemployed (%)")
@@ -116,7 +117,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(bar1) +
       aes(x = county,
-          y = population_density_per_sqmi,fill=county) +
+          y = population_density_per_sqmi,fill=state,linetype=county) +
       geom_bar(stat="identity")+
       ggtitle('Population Density')+
       labs(y='Density (sqmi)')
@@ -131,7 +132,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(bar1) +
       aes(x = county,
-          y = percent_age_17_and_younger,fill=county) +
+          y = percent_age_17_and_younger,fill=state,linetype=county) +
       geom_bar(stat="identity")+
       ggtitle('Young Population: 17 and Below') +
       labs(y='Under 18yo (%)')
@@ -146,7 +147,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(bar1) +
       aes(x = county,
-          y = percent_age_65_and_older,fill=county) +
+          y = percent_age_65_and_older,fill=state,linetype=county) +
       geom_bar(stat="identity")+
       ggtitle('Senior Population: 65 and Up') +
       labs(y='Over 64yo (%)')
@@ -163,7 +164,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(line1, aes(x = Date,
                            y = mean_temp,
-                           color = county)) +
+                           color = state,linetype=county)) +
       geom_line() +
       xlab("Month") +
       ylab("Mean Temperature (F)") +
@@ -181,7 +182,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(line1, aes(x = Date,
                            y = precipitation,
-                           color = county)) +
+                           color = state,linetype=county)) +
       geom_line() +
       xlab("Month") +
       ylab("Precipitation (in)") +
@@ -199,7 +200,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(line1, aes(x = Date,
                            y = max_temp,
-                           color = county)) +
+                           color = state,linetype=county)) +
       geom_line() +
       xlab("Month") +
       ylab("Max Temperature (F)") +
@@ -217,7 +218,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(line1, aes(x = Date,
                            y = min_temp,
-                           color = county)) +
+                           color = state,linetype=county)) +
       geom_line() +
       xlab("Month") +
       ylab("Min Temperature (F)") +
@@ -235,7 +236,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(line1, aes(x = Date,
                            y = rain,
-                           color = county)) +
+                           color = state,linetype=county)) +
       geom_line() +
       xlab("Month") +
       ylab("Rain (in)") +
@@ -253,7 +254,7 @@ app$callback(
       filter(county %in% xcol)
     p <- ggplot(line1, aes(x = Date,
                            y = snow,
-                           color = county)) +
+                           color = state,linetype=county)) +
       geom_line() +
       xlab("Month") +
       ylab("Snow (in)") +
