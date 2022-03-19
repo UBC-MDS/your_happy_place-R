@@ -264,5 +264,4 @@ app$callback(
   }
 ) 
 
-debug = TRUE
 app$run_server(host = '0.0.0.0')
