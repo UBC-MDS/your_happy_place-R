@@ -10,18 +10,21 @@ We are here for you!
 
 At Your Happy Place, you will be able to find your next base according to your very own preferences. Compare weather, schools, healthcare, cost of living and more among over 8,000 US counties!
 
-The dashboard below is the weather app component of YHP.
+The dashboard below is the weather app component of YHP. Check it out on Heroku:
+https://your-happy-place-r.herokuapp.com/
 
-1. On the right hand-side, you begin by selecting whether to color the states and the counties within the state by temperature, by percentage of the days that it rains or by percentage of the days that it snows. Then, you can begin your comparison process.
+![Demo of the app](demo.gif)
 
-2. On the top left, the map of the USA is now colored according to your selection. Hover over it to see individual values for the states. Click on the state to select it, and see it appear in the center-top cell.
+1. On the top of the display you will notice a 'county' box, you begin by selecting all the US counties you would like to start comparing. When doing this you will notice a list of the counties you are selecting begin to appear.
 
-3. Counties within the state are colored according to the same preferences that you selected in Step 1. Hover over the counties to see individual values. Click the county to select it, and see it appear in the menu on the right-hand side. The county will start in "checked" state and immediately appear in the five plots with the designated color.
+2. Below the selector you will see many generated graphs for categories that include: Percentage unemployed, Mean Monthly Temperature, Mean Monthly Precipitation, Minimum monthly temperature, Mean monthly rainfall, Max monthly temperature, Mean monthly Snowfall, Population density, and the list goes on! You can then use these plots to compare the cities you have selected above.
 
-4. You may remove the county from the "selected counties" menu by clicking on it on the state map. You may also simply un-check it on the right-hand side and it will no longer show up on the plots.
+3. You may remove counties by clicking "x" in the selector section.
 
-Below please find the sketch of the dashboard:
-![Dashboard Sketch](images/dashboard_sketch.png)
+4. Feel free to navigate between the tabs and hover over the graphs to get more information!
+
+Its just that simple!
+
 
 License
 -------
